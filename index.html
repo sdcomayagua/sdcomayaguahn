@@ -1,15 +1,29 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SDComayagua – Catálogo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="trustbar">
+    <div class="trustbar__inner">
+      <div class="trustbar__item">🛡️ Garantía / Soporte</div>
+      <div class="trustbar__item">🚚 Envíos</div>
+      <div class="trustbar__item">⚡ WhatsApp</div>
+      <div class="trustbar__spacer"></div>
+      <div class="trustbar__item trustbar__socials">
+        <a href="#" id="socialFb" aria-label="Facebook">f</a>
+        <a href="#" id="socialIg" aria-label="Instagram">ig</a>
+        <a href="#" id="socialTt" aria-label="TikTok">tt</a>
+      </div>
+    </div>
+  </div>
+
   <header class="top">
     <div class="top__inner">
       <a class="brand" href="#" id="goHome" aria-label="Inicio">
@@ -26,8 +40,8 @@
       </div>
 
       <div class="top__actions">
-        <button class="btn btn--ghost btn--menu" id="btnMenu" title="Menú">☰</button>
-        <button class="btn btn--ghost" id="btnTheme" title="Cambiar tema">🌙/☀️</button>
+        <button class="btn btn--ghost" id="btnMenu" title="Menú">☰</button>
+        <button class="btn btn--ghost" id="btnTheme" title="Tema">🌙/☀️</button>
         <button class="btn btn--ghost" id="btnShipping">Envíos</button>
         <button class="btn btn--ghost" id="btnSetup" title="Configurar API">Config</button>
         <a class="btn btn--whatsapp" id="btnWhatsApp" target="_blank" rel="noopener">WhatsApp</a>
@@ -39,11 +53,8 @@
         <button class="pill pill--active" id="tabCatalog">Catálogo</button>
         <button class="pill" id="tabOffers">Ofertas</button>
         <div class="divider"></div>
-
         <div class="quick" id="quickCats"></div>
-
         <div class="spacer"></div>
-
         <div class="meta">
           <span class="status" id="status">Cargando…</span>
           <span class="count" id="pillCount"></span>
@@ -53,31 +64,19 @@
   </header>
 
   <main class="wrap">
-    <!-- HERO -->
-    <section class="hero" id="hero">
+    <section class="hero">
       <div class="hero__card">
         <div class="hero__badge">Pedidos por WhatsApp • Sin carrito</div>
-        <h1 class="hero__title">Lo más buscado en tecnología y gamer</h1>
-        <p class="hero__text">Catálogo conectado a Google Sheets: precios, stock, ofertas, fotos y video. Si está <b>agotado</b>, podés consultar disponibilidad.</p>
-
+        <h1 class="hero__title">Tecnología & Gamer a tu alcance</h1>
+        <p class="hero__text">Catálogo conectado a Google Sheets: precios, stock, ofertas, fotos y video.</p>
         <div class="hero__cta">
-          <button class="btn btn--primary" id="btnExplore">Explorar catálogo</button>
+          <button class="btn btn--primary" id="btnExplore">Visitar catálogo</button>
           <button class="btn btn--ghost" id="btnViewOffers">Ver ofertas</button>
         </div>
-
         <div class="hero__stats">
-          <div class="stat">
-            <div class="stat__k" id="statProducts">—</div>
-            <div class="stat__v">productos</div>
-          </div>
-          <div class="stat">
-            <div class="stat__k" id="statCats">—</div>
-            <div class="stat__v">categorías</div>
-          </div>
-          <div class="stat">
-            <div class="stat__k">8</div>
-            <div class="stat__v">fotos por producto</div>
-          </div>
+          <div class="stat"><div class="stat__k" id="statProducts">—</div><div class="stat__v">productos</div></div>
+          <div class="stat"><div class="stat__k" id="statCats">—</div><div class="stat__v">categorías</div></div>
+          <div class="stat"><div class="stat__k">8</div><div class="stat__v">fotos por producto</div></div>
         </div>
       </div>
 
@@ -89,18 +88,10 @@
 
         <div class="panel">
           <div class="panel__title">Filtros</div>
-
           <div class="filters">
-            <div class="field">
-              <label>Categoría</label>
-              <select id="selCat"></select>
-            </div>
-            <div class="field">
-              <label>Subcategoría</label>
-              <select id="selSub"></select>
-            </div>
-            <div class="field">
-              <label>Orden</label>
+            <div class="field"><label>Categoría</label><select id="selCat"></select></div>
+            <div class="field"><label>Subcategoría</label><select id="selSub"></select></div>
+            <div class="field"><label>Orden</label>
               <select id="selSort">
                 <option value="relev">Relevancia</option>
                 <option value="price_asc">Precio ↑</option>
@@ -109,7 +100,6 @@
               </select>
             </div>
           </div>
-
           <div class="chips" id="stockChips">
             <button class="chip chip--active" data-filter="all">Todo</button>
             <button class="chip" data-filter="inStock">Con stock</button>
@@ -119,17 +109,15 @@
       </div>
     </section>
 
-    <!-- FEATURED -->
     <section class="section" id="featuredSection">
       <div class="section__head">
         <h2 class="section__title">Destacados</h2>
-        <div class="section__sub">Selección automática: promos y productos con mejor stock.</div>
+        <div class="section__sub">Promos y productos con stock.</div>
       </div>
       <div class="carousel" id="featured"></div>
     </section>
 
-    <!-- LIST -->
-    <section class="section">
+    <section class="section" id="listSection">
       <div class="section__head">
         <h2 class="section__title" id="listTitle">Productos</h2>
         <div class="section__right">
@@ -154,31 +142,30 @@
   <div class="modal-backdrop" id="productBackdrop" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal__head">
-        <button class="icon icon--menu" id="btnDrawerFromProduct" aria-label="Menú">☰</button>
         <div class="modal__title" id="modalTitle">Producto</div>
-        <div class="modal__headActions">
-          <button class="icon" id="btnCopyLink" aria-label="Copiar link">🔗</button>
+        <div class="modal__headRight">
+          <button class="btn btn--ghost btn--sm" id="btnCopyLink" title="Copiar link">🔗 Link</button>
+          <button class="btn btn--ghost btn--sm" id="btnOpenMenuFromProduct" title="Buscar más">☰ Menú</button>
           <button class="icon" id="btnCloseProduct" aria-label="Cerrar">✕</button>
         </div>
       </div>
 
       <div class="modal__body">
         <div class="gallery">
-          <div class="gallery__hero">
-            <img id="heroImg" alt="" />
-          </div>
+          <div class="gallery__hero"><img id="heroImg" alt="" /></div>
           <div class="gallery__thumbs" id="thumbs"></div>
         </div>
 
         <div class="details">
+          <div class="breadcrumbs" id="modalBreadcrumbs"></div>
           <div class="details__top">
             <div class="price" id="modalPrice"></div>
             <div class="badge" id="modalBadge"></div>
           </div>
 
           <div class="kv">
-            <div><span class="muted">Categoría:</span> <a id="modalCatLink" class="link" href="#"></a></div>
-            <div><span class="muted">Sub:</span> <a id="modalSubLink" class="link" href="#"></a></div>
+            <div><span class="muted">Categoría:</span> <a href="#" id="modalCatLink"></a></div>
+            <div><span class="muted">Sub:</span> <a href="#" id="modalSubLink"></a></div>
             <div id="videoLine" hidden><span class="muted">Video:</span> <a id="modalVideo" target="_blank" rel="noopener">Ver</a></div>
           </div>
 
@@ -195,19 +182,67 @@
 
           <div class="offers" id="offersBox" hidden>
             <div class="offers__title">Ofertas</div>
-            <div class="offers__sub">Elegí una promo (ajusta cantidad automáticamente).</div>
+            <div class="offers__sub">Elegí una promo.</div>
             <div class="offers__list" id="offersTable"></div>
           </div>
 
           <div class="cta">
             <button class="btn btn--primary" id="btnOrder">Pedir por WhatsApp</button>
             <button class="btn btn--secondary" id="btnAsk">Consultar disponibilidad</button>
+            <button class="btn btn--ghost" id="btnKeepBrowsing">🔍 Seguir buscando</button>
           </div>
 
-          <div class="hint muted">Tip: pedí este producto y luego podés volver para pedir otro.</div>
+          <div class="related" id="relatedBox" hidden>
+            <div class="related__head">
+              <div class="related__title">También te puede interesar</div>
+              <button class="btn btn--ghost btn--sm" id="btnSeeMoreRelated">Ver más</button>
+            </div>
+            <div class="related__grid" id="relatedGrid"></div>
+          </div>
+
+          <div class="hint muted">Tip: copiá el link para enviarlo al cliente.</div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- DRAWER MENU -->
+  <div class="drawer-backdrop" id="drawerBackdrop" hidden>
+    <aside class="drawer" role="dialog" aria-modal="true" aria-label="Menú">
+      <div class="drawer__head">
+        <div class="drawer__title">Menú</div>
+        <button class="icon" id="btnCloseDrawer" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="drawer__search">
+        <input id="drawerSearch" type="search" placeholder="Buscar en todo el catálogo…" />
+      </div>
+
+      <div class="drawer__section">
+        <div class="drawer__sectionTitle">Accesos</div>
+        <div class="drawer__actions">
+          <button class="dbtn" id="drawerGoCatalog">Catálogo</button>
+          <button class="dbtn" id="drawerGoOffers">Ofertas</button>
+          <button class="dbtn" id="drawerClear">Limpiar</button>
+        </div>
+      </div>
+
+      <div class="drawer__section">
+        <div class="drawer__sectionTitle">Categorías</div>
+        <div class="drawer__cats" id="drawerCats"></div>
+      </div>
+
+      <div class="drawer__section">
+        <div class="drawer__sectionTitle">Marcas</div>
+        <div class="drawer__brands" id="drawerBrands"></div>
+      </div>
+
+      <div class="drawer__section drawer__footer">
+        <button class="dbtn dbtn--primary" id="drawerWhats">WhatsApp</button>
+        <button class="dbtn" id="drawerCopyFilters">Copiar link actual</button>
+        <div class="drawer__small muted">Links para productos, categorías y subcategorías ✅</div>
+      </div>
+    </aside>
   </div>
 
   <!-- SHIPPING MODAL -->
@@ -220,65 +255,20 @@
 
       <div class="ship">
         <div class="ship__controls">
-          <div class="field">
-            <label>Departamento</label>
-            <select id="selDept"></select>
-          </div>
-          <div class="field">
-            <label>Municipio</label>
-            <select id="selMuni"></select>
-          </div>
-          <div class="field">
-            <label>Zona/Colonia (opcional)</label>
-            <select id="selZone"></select>
-          </div>
+          <div class="field"><label>Departamento</label><select id="selDept"></select></div>
+          <div class="field"><label>Municipio</label><select id="selMuni"></select></div>
+          <div class="field"><label>Zona/Colonia</label><select id="selZone"></select></div>
         </div>
-
         <div class="ship__results" id="shipResults"></div>
-        <div class="ship__note muted">
-          Los precios se editan en tu Google Sheet (hoja <b>envios</b>).
-        </div>
+        <div class="ship__note muted">Los precios se editan en tu Sheet (hoja <b>envios</b>).</div>
       </div>
     </div>
   </div>
 
   <footer class="footer">
-    <div class="muted">SDComayagua • Catálogo conectado a Google Sheets • Pedidos por WhatsApp</div>
+    <div class="muted">SDComayagua • Google Sheets • WhatsApp</div>
   </footer>
 
   <script src="app.js"></script>
-
-  <!-- Drawer (menú clásico en móvil) -->
-  <div class="drawerBackdrop" id="drawerBackdrop" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Menú" hidden>
-    <div class="drawer__head">
-      <div class="drawer__title">Menú</div>
-      <button class="icon" id="btnCloseDrawer" aria-label="Cerrar">✕</button>
-    </div>
-
-    <div class="drawer__search">
-      <input id="drawerSearch" type="search" placeholder="Buscar productos…" autocomplete="off" />
-    </div>
-
-    <div class="drawer__section">
-      <div class="drawer__label">Categorías</div>
-      <div class="drawer__cats" id="drawerCats"></div>
-    </div>
-
-    <div class="drawer__section">
-      <div class="drawer__label">Marcas</div>
-      <div class="drawer__brands" id="drawerBrands"></div>
-    </div>
-
-    <div class="drawer__section">
-      <div class="drawer__label">Accesos rápidos</div>
-      <div class="drawer__quick">
-        <button class="chip" id="drawerGoCatalog">Catálogo</button>
-        <button class="chip" id="drawerGoOffers">Ofertas</button>
-        <button class="chip" id="drawerClear">Quitar filtros</button>
-      </div>
-    </div>
-  </aside>
-
 </body>
 </html>
