@@ -10,7 +10,7 @@
     try {
       return new Intl.NumberFormat(CFG.LOCALE || "es-HN", {
         style: "currency",
-        currency: CFG.CURRENCY || "HNL",
+        currency: CFG.CURRENCY || "Lps.",
         maximumFractionDigits: 0
       }).format(val);
     } catch {
@@ -38,11 +38,9 @@
   const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
 
   // ---------- Theme ----------
-  const themeBtn = $("#themeBtn");
-  const THEME_KEY = "sdco_theme";
+    const THEME_KEY = "sdco_theme";
   const applyTheme = (t) => {
     document.documentElement.dataset.theme = t;
-    if (themeBtn) themeBtn.querySelector(".icon").textContent = t === "dark" ? "☀️" : "🌙";
     localStorage.setItem(THEME_KEY, t);
   };
   const initTheme = () => {
@@ -494,7 +492,6 @@
     waFooter.href = waHello;
 
     // theme
-    themeBtn?.addEventListener("click", () => {
       const cur = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
       applyTheme(cur === "dark" ? "light" : "dark");
     });

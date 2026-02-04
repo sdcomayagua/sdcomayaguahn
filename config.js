@@ -12,7 +12,7 @@ window.SDCO_CONFIG = {
   USE_ONLY_MODE: true,
   // Si en tu backend usas ?resource=productos en vez de ?only=productos, pon USE_ONLY_MODE en false.
   // USE_ONLY_MODE: false,
-  CURRENCY: "HNL",
+  CURRENCY: "Lps.",
   LOCALE: "es-HN",
   // Si quieres mostrar precio en USD también, pon un tipo de cambio fijo aquí (opcional).
   USD_RATE: null
