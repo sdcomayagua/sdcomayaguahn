@@ -703,3 +703,84 @@ body{
   color: rgb(var(--fg)) !important;
 }
 .price{color: rgb(var(--brand)) !important;}
+
+
+
+/* =========================================================
+   Layout responsive: drawer by default, sidebar on desktop
+   ========================================================= */
+html, body{overflow-x:hidden;}
+.layout{display:grid;grid-template-columns:1fr;gap:16px;padding:14px 0 22px;}
+/* Drawer (default) */
+.sidebar{
+  position:fixed !important;
+  left:0; top:0; bottom:0;
+  width:min(340px, 92vw);
+  z-index:80;
+  transform:translateX(-110%) !important;
+  transition:transform .20s ease;
+  border-radius:0 18px 18px 0;
+  overflow:auto;
+  margin:0 !important;
+}
+.sidebar.open{transform:translateX(0) !important;}
+.sidebar__close{display:grid !important;}
+.mbackdrop{display:none;}
+body.menu-open .mbackdrop{display:block;}
+/* Desktop: show sidebar column */
+@media (min-width: 1000px){
+  .layout{grid-template-columns:270px 1fr;}
+  .sidebar{
+    position:sticky !important;
+    top:84px;
+    height:fit-content;
+    transform:none !important;
+    border-radius:18px;
+    width:auto;
+  }
+  .sidebar__close{display:none !important;}
+  .mbackdrop{display:none !important;}
+}
+
+
+
+/* Status bar under header */
+.statusbar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1px solid rgb(var(--border));
+  background:rgba(255,255,255,.75);
+  border-radius:16px;
+}
+.statusbar #statusText2{font-weight:800;color:rgb(var(--muted));font-size:12px}
+.statusbar .dot{width:10px;height:10px;border-radius:99px;background:#94a3b8;display:inline-block}
+.statusbar .dot.ok{background:rgb(var(--green))}
+.statusbar .dot.bad{background:#ef4444}
+
+/* Controls: less crowded */
+.controls{justify-content:space-between}
+.controls__switch{flex:1;min-width:160px}
+.controls__sort{flex:1;min-width:180px}
+@media (max-width:520px){
+  .controls{flex-direction:column;align-items:stretch}
+  .controls__filters{width:100%}
+  .controls__switch{width:100%}
+  .controls__sort{width:100%}
+}
+
+/* Floating WhatsApp button (bottom-left) */
+.fab-wa{
+  position:fixed;
+  left:14px;
+  bottom:14px;
+  z-index:90;
+  padding:12px 14px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#25d366,#1ebe5d);
+  color:#fff;
+  font-weight:900;
+  box-shadow:0 16px 32px rgba(34,197,94,.25);
+  text-decoration:none;
+}

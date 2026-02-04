@@ -138,32 +138,60 @@
     return p;
   };
 
-  const loadProducts = async () => {
+  const setStatus = (msg, kind="") => {
+    const dot2 = $("#statusDot2");
+    const txt2 = $("#statusText2");
+    if (txt2) txt2.textContent = msg;
+    if (dot2){ dot2.classList.remove("ok","bad"); if(kind) dot2.classList.add(kind); }
     const dot = $("#statusDot");
     const txt = $("#statusText");
-    try{
-      dot?.classList.remove("ok","bad");
-      dot && (dot.className = "dot");
-      if (txt) txt.textContent = "Cargando productos…";
+    if (txt) txt.textContent = msg;
+    if (dot){ dot.classList.remove("ok","bad"); if(kind) dot.classList.add(kind); }
+  };
 
+  const loadProducts = async () => {
+    try{
+      setStatus("Cargando catálogo…");
       const url = getProductsUrl();
       if (!url) throw new Error("Falta API_BASE en config.js");
 
-      const data = await fetchJSON(url);
+      // 1) Mostrar cache inmediato (si existe)
+      try{
+        const cached = localStorage.getItem("sdco_products_cache");
+        if (cached){
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length){
+            allProducts = parsed.map(mapProduct).filter(p => p.activo && p.id && p.nombre);
+            setStatus(`Catálogo listo (cache): ${allProducts.length} productos`, "ok");
+          }
+        }
+      }catch(e){}
+
+      // 2) Fetch con timeout (para que no se quede colgado 10s)
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 6500);
+
+      const data = await fetchJSON(url, { signal: controller.signal });
+      clearTimeout(t);
+
       const rows = data.productos || data.data || data.items || [];
       allProducts = safeArr(rows).map(mapProduct).filter(p => p.activo && p.id && p.nombre);
 
-      // Sort initial by name (stable)
+      // orden estable
       allProducts.sort((a,b)=>a.nombre.localeCompare(b.nombre, "es"));
 
-      if (txt) txt.textContent = `Listo: ${allProducts.length} productos`;
-      dot?.classList.add("ok");
+      // guardar cache
+      try{ localStorage.setItem("sdco_products_cache", JSON.stringify(allProducts)); }catch(e){}
+
+      setStatus(`Listo: ${allProducts.length} productos`, "ok");
       $("#updatedAt").textContent = `Actualizado: ${new Date().toLocaleString(CFG.LOCALE || "es-HN")}`;
     } catch (e){
       console.error(e);
-      if (txt) txt.textContent = "No se pudo cargar. Revisá tu Apps Script / permisos.";
-      dot?.classList.add("bad");
-      allProducts = [];
+      // si ya había cache, dejarlo; si no, vacío
+      if (!allProducts || !allProducts.length){
+        allProducts = [];
+      }
+      setStatus("No se pudo cargar el catálogo. Revisá tu Apps Script.", "bad");
     }
   };
 
