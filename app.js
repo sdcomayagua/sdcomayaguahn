@@ -625,3 +625,22 @@
 
   init();
 })();
+async function loadCatalog(){
+  try{
+    STATUS.set("warn", "Cargando catálogo…");
+    const productos = await getProductos();
+
+    if(typeof state !== "undefined") state.products = productos;
+    if(typeof buildTaxonomy === "function") buildTaxonomy(productos);
+    if(typeof applyFilters === "function") applyFilters();
+    if(typeof render === "function") render();
+
+    STATUS.set("ok", "Listo: " + productos.length + " productos");
+    setTimeout(()=> STATUS.hide(), 1400);
+  }catch(e){
+    console.error(e);
+    STATUS.set("bad", "No se pudo cargar el catálogo. " + (e && e.message ? e.message : ""));
+  }
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{ try{ loadCatalog(); }catch(e){} });
