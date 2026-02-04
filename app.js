@@ -38,16 +38,13 @@
   const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
 
   // ---------- Theme ----------
-    const THEME_KEY = "sdco_theme";
   const applyTheme = (t) => {
     document.documentElement.dataset.theme = t;
     localStorage.setItem(THEME_KEY, t);
   };
   const initTheme = () => {
     const saved = localStorage.getItem(THEME_KEY);
-    if (saved) return applyTheme(saved);
     const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    applyTheme(prefersDark ? "dark" : "light");
   };
 
   // ---------- State ----------
@@ -518,11 +515,6 @@
     const waHello = waLink(`Hola, vengo de la tienda ${CFG.APP_NAME}. ¿Me compartís el catálogo?`);
     waBtn.href = waHello;
     waFooter.href = waHello;
-
-    // theme
-      const cur = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
-      applyTheme(cur === "dark" ? "light" : "dark");
-    });
 
     // search
     const searchInput = $("#searchInput");
