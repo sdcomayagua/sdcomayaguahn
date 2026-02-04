@@ -9,7 +9,7 @@ window.SDCO_CONFIG = {
   WHATSAPP_NUMBER: "50431517755",
   API_BASE: "https://script.google.com/macros/s/AKfycbz3cGjYhcjXLyCcue8SpFPt3u_a7jE8huqtN-fDnZGhhN04BN-FfmgZePmorbAMUDmGDw/exec",
   // Si tu Apps Script expone ?only=productos (como el backend premium), déjalo en true.
-  USE_ONLY_MODE: true,
+  USE_ONLY_MODE: false,
   // Si en tu backend usas ?resource=productos en vez de ?only=productos, pon USE_ONLY_MODE en false.
   // USE_ONLY_MODE: false,
   CURRENCY: "Lps.",
