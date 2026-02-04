@@ -512,3 +512,56 @@ body{
 
 /* Keep search visible */
 .topbar__search{display:block !important;}
+
+
+
+/* =========================================================
+   Mobile Filters Drawer (Shopify-like)
+   ========================================================= */
+@media (max-width: 900px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{
+    position:fixed !important;
+    left:0; top:0; bottom:0;
+    width:min(340px, 92vw);
+    z-index:80;
+    transform:translateX(-110%);
+    transition:transform .20s ease;
+    border-radius:0 18px 18px 0;
+    overflow:auto;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .sidebar__close{display:grid !important}
+  body.menu-open::before{
+    content:"";
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:79;
+  }
+}
+
+
+
+/* =========================================================
+   Catalog-first (no hero) — Shopify Dark
+   ========================================================= */
+.topbar{position:sticky; top:0; z-index:60;}
+.layout{padding-top:12px;}
+.section-head{margin-top:6px;}
+.section-title{margin:0;}
+
+.hero{display:none!important}
+
+@media (max-width: 900px){ .sidebar{box-shadow:0 18px 40px rgba(0,0,0,.35);} }
+
+/* Backdrop element for mobile filters */
+.mbackdrop{display:none;}
+@media (max-width:900px){
+  .mbackdrop{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:79;
+  }
+  body.menu-open .mbackdrop{display:block;}
+}
