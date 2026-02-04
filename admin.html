@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SDComayagua | Panel Admin</title>
+  <meta name="description" content="Panel para agregar, editar y eliminar productos desde Google Sheets (sin base de datos)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./admin.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="./">
+        <div class="brand__logo" aria-hidden="true">SDC</div>
+        <div class="brand__text">
+          <div class="brand__name" id="brandName">SDComayagua</div>
+          <div class="brand__tag">Panel de administración</div>
+        </div>
+      </a>
+
+      <div class="topbar__actions">
+        <a class="btn" href="./">Ver tienda</a>
+        <button class="btn btn--primary" id="logoutBtn">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="login" id="loginBox">
+      <h1>Acceso Admin</h1>
+      <p>Ingresá tu <strong>ADMIN_KEY</strong> (la clave que pusiste en tu Apps Script).</p>
+
+      <div class="formrow">
+        <input id="keyInput" type="password" placeholder="ADMIN_KEY" autocomplete="current-password" />
+        <button class="btn btn--primary" id="loginBtn">Entrar</button>
+      </div>
+
+      <div class="hint">
+        Esta clave se guarda solo en tu navegador (localStorage). Si cambiás de PC o navegador, la volvés a ingresar.
+      </div>
+    </section>
+
+    <section class="panel" id="panel" hidden>
+      <div class="panel__top">
+        <div>
+          <h2>Productos</h2>
+          <div class="muted">Agregá / editá / eliminá sin tocar código.</div>
+        </div>
+        <div class="panel__actions">
+          <button class="btn" id="refreshBtn">Recargar</button>
+          <button class="btn btn--primary" id="newBtn">+ Nuevo</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <span class="search__icon">🔎</span>
+          <input id="searchInput" type="search" placeholder="Buscar por nombre, categoría, marca..." />
+          <button class="clear-btn" id="clearSearch" title="Limpiar">✕</button>
+        </div>
+        <div class="right">
+          <select id="filterActive" class="select">
+            <option value="all">Todos</option>
+            <option value="active">Activos</option>
+            <option value="inactive">Inactivos</option>
+          </select>
+          <select id="filterStock" class="select">
+            <option value="all">Stock: Todos</option>
+            <option value="in">Con stock</option>
+            <option value="out">Agotados</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table class="table" id="table">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Categoría</th>
+              <th>Marca</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Activo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="status" id="status"></div>
+    </section>
+  </main>
+
+  <!-- Editor Modal -->
+  <div class="modal" id="editorModal" aria-hidden="true">
+    <div class="modal__backdrop" data-close="1"></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+      <button class="modal__close" data-close="1" aria-label="Cerrar">✕</button>
+
+      <div class="ed">
+        <div class="ed__head">
+          <div>
+            <div class="ed__kicker">Editor</div>
+            <h3 id="edTitle">Producto</h3>
+          </div>
+          <div class="ed__headActions">
+            <button class="btn" id="duplicateBtn">Duplicar</button>
+            <button class="btn btn--danger" id="deleteBtn">Eliminar</button>
+          </div>
+        </div>
+
+        <div class="form">
+          <div class="grid2">
+            <label class="field">
+              <span>ID</span>
+              <div class="field__row">
+                <input id="f_id" placeholder="Auto" />
+                <button class="btn" id="genIdBtn" type="button">Generar</button>
+              </div>
+              <small>Si lo dejás vacío, lo generamos. El ID debe ser único.</small>
+            </label>
+
+            <label class="field">
+              <span>Nombre</span>
+              <input id="f_nombre" placeholder="Ej: Audífonos Gamer Pro" />
+            </label>
+
+            <label class="field">
+              <span>Categoría</span>
+              <input id="f_categoria" placeholder="Ej: Gamer" />
+            </label>
+
+            <label class="field">
+              <span>Subcategoría</span>
+              <input id="f_subcategoria" placeholder="Ej: Audífonos" />
+            </label>
+
+            <label class="field">
+              <span>Marca</span>
+              <input id="f_marca" placeholder="Ej: Xiaomi" />
+            </label>
+
+            <label class="field">
+              <span>Precio (HNL)</span>
+              <input id="f_precio" inputmode="decimal" placeholder="Ej: 499" />
+            </label>
+
+            <label class="field">
+              <span>Stock</span>
+              <input id="f_stock" inputmode="numeric" placeholder="Ej: 10" />
+            </label>
+
+            <label class="field">
+              <span>Activo</span>
+              <select id="f_activo">
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+              <small>Si está inactivo, no se mostrará en la tienda.</small>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Descripción</span>
+            <textarea id="f_descripcion" rows="5" placeholder="Descripción del producto…"></textarea>
+          </label>
+
+          <div class="grid2">
+            <label class="field">
+              <span>Imagen principal (URL)</span>
+              <input id="f_img" placeholder="https://…" />
+            </label>
+            <label class="field">
+              <span>Video (opcional)</span>
+              <input id="f_video_url" placeholder="https://…" />
+            </label>
+          </div>
+
+          <div class="gallery">
+            <div class="gallery__head">
+              <div class="gallery__title">Galería (hasta 8 URLs)</div>
+              <div class="muted">Poné URLs de imágenes. Si está vacío, usa la principal.</div>
+            </div>
+            <div class="grid4">
+              <input id="f_g1" placeholder="Galería 1" />
+              <input id="f_g2" placeholder="Galería 2" />
+              <input id="f_g3" placeholder="Galería 3" />
+              <input id="f_g4" placeholder="Galería 4" />
+              <input id="f_g5" placeholder="Galería 5" />
+              <input id="f_g6" placeholder="Galería 6" />
+              <input id="f_g7" placeholder="Galería 7" />
+              <input id="f_g8" placeholder="Galería 8" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="cancelBtn">Cancelar</button>
+            <button class="btn btn--primary" id="saveBtn">Guardar</button>
+          </div>
+
+          <div class="small muted" id="edStatus"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="./admin.js"></script>
+</body>
+</html>
