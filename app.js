@@ -304,6 +304,7 @@
   // ---------- Product Modal ----------
   const productModal = $("#productModal");
   const pmImage = $("#pmImage");
+  if (pmImage) pmImage.onerror = () => { pmImage.src = "./assets/placeholder.png"; };
   const pmThumbs = $("#pmThumbs");
   const pmTitle = $("#pmTitle");
   const pmMeta = $("#pmMeta");
